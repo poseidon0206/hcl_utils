@@ -24,7 +24,7 @@ class BackToTheFuture:
     for m in range(self.loopRange):
       newMth = self.yearsAgo.month + m
       newYear = self.yearsAgo.year
-      newYear += int(newMth / 12)
+      newYear += newMth // 12
       if newMth % 12 == 0:
         newMth -= ((newMth // 12) - 1) * 12
         newYear -= 1
