@@ -13,7 +13,8 @@ class BackToTheFuture:
     self.month = int(month)
     self.numberOfYears = numberOfYears
     self.rightNow = datetime.strptime(f"{year}-{month}-05", "%Y-%m-%d")
-    self.yearsAgo = self.rightNow - timedelta(days=self.numberOfYears * 365)
+    deltaDays = self.numberOfYears * 365 + (self.numberOfYears // 4)
+    self.yearsAgo = self.rightNow - timedelta(days=deltaDays)
     self.loopRange = self.numberOfYears * 12 + 1
 
   def byYear(self):

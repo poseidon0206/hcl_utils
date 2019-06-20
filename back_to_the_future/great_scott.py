@@ -1,6 +1,6 @@
 from BackToTheFuture import BackToTheFuture
 
-greatScott = BackToTheFuture(year=2015, month=11, numberOfYears=30)
+greatScott = BackToTheFuture(year=2019, month=6, numberOfYears=10)
 print(greatScott)
 
 # go by month
