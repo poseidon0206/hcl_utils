@@ -1,3 +1,5 @@
+import argparse
+
 from datetime import date, datetime, timedelta
 
 
@@ -32,6 +34,33 @@ class BackToTheFuture:
       else:
         newMth -= (newMth // 12) * 12
       yield date(newYear, newMth, self.rightNow.day)
+
+  @staticmethod
+  def parse(sysArgs):
+    parser = argparse.ArgumentParser(description="Great Scott! 1.21 gigawatts!?")
+    parser.add_argument("-y",
+                        "--year",
+                        type=int,
+                        default=1985,
+                        help="the destined year.")
+    parser.add_argument("-m",
+                        "--month",
+                        default=11,
+                        help="the destined month.")
+    parser.add_argument("-n",
+                        "--number-of-years",
+                        type=int,
+                        default=30,
+                        help="the number of years to traverse.")
+    parser.add_argument("-l",
+                        "--monthly",
+                        action="store_true",
+                        help="show traversed months.")
+    parser.add_argument("-a",
+                        "--annually",
+                        action="store_true",
+                        help="show traversed years.")
+    return parser.parse_args(sysArgs)
 
   def __repr__(self):
     return """

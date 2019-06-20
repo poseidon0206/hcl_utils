@@ -1,14 +1,23 @@
+import sys
+
 from BackToTheFuture import BackToTheFuture
 
-greatScott = BackToTheFuture(year=2019, month=6, numberOfYears=10)
-print(greatScott)
 
-# go by month
-print("going by month")
-for pastDate in greatScott.byMonth():
-  print(pastDate)
+if __name__ == "__main__":
+  args = BackToTheFuture.parse(sys.argv[1:])
+  greatScott = BackToTheFuture(
+    year=args.year,
+    month=args.month,
+    numberOfYears=args.number_of_years
+  )
+  print(greatScott)
 
-# go by year
-print("going by year")
-for pastDate in greatScott.byYear():
-  print(pastDate)
+  if args.monthly is True:
+    print("going from {o.yearsAgo} to {o.rightNow} by month:".format(o=greatScott))
+    for pastDate in greatScott.byMonth():
+      print(pastDate)
+
+  if args.annually is True:
+    print("going from {o.yearsAgo} to {o.rightNow} by year:".format(o=greatScott))
+    for pastDate in greatScott.byYear():
+      print(pastDate)
