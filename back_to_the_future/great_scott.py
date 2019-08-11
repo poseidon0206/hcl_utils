@@ -5,19 +5,19 @@ from BackToTheFuture import BackToTheFuture
 
 if __name__ == "__main__":
   args = BackToTheFuture.parse(sys.argv[1:])
-  greatScott = BackToTheFuture(
+  great_scott = BackToTheFuture(
     year=args.year,
     month=args.month,
-    numberOfYears=args.number_of_years
+    number_of_years=args.number_of_years
   )
-  print(greatScott)
+  print(great_scott)
 
   if args.monthly is True:
-    print("going from {o.yearsAgo} to {o.rightNow} by month:".format(o=greatScott))
-    for pastDate in greatScott.byMonth():
-      print(pastDate)
+    print("going from {o.years_ago} to {o.right_now} by month:".format(o=great_scott))
+    for past_date in great_scott.by_month():
+      print(past_date)
 
   if args.annually is True:
-    print("going from {o.yearsAgo} to {o.rightNow} by year:".format(o=greatScott))
-    for pastDate in greatScott.byYear():
-      print(pastDate)
+    print("going from {o.years_ago} to {o.right_now} by year:".format(o=great_scott))
+    for past_date in great_scott.by_year():
+      print(past_date)

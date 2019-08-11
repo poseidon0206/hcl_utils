@@ -2,40 +2,40 @@ from datetime import date, datetime
 
 
 class QRelease2:
-  def __init__(self, queryDate=datetime.now().strftime("%Y-%m-%d"), every=3):
+  def __init__(self, query_date=datetime.now().strftime("%Y-%m-%d"), every=3):
     """
     QRelease2: does the same thing as QRelease, just fancier.
-    :param queryDate: (str) the date in YYYY-MM-DD format, defaults to current time.
+    :param query_date: (str) the date in YYYY-MM-DD format, defaults to current time.
     :param every: (int) the release period, defaults to 3.
     """
-    self.queryDatetime = datetime.strptime(queryDate, "%Y-%m-%d")
-    self.relPeriod = every
+    self.query_datetime = datetime.strptime(query_date, "%Y-%m-%d")
+    self.rel_period = every
 
-    self.current = Quarter(self.getStartOfQuarter(self.queryDatetime.year, self.queryDatetime.month))
+    self.current = Quarter(self.get_start_of_quarter(self.query_datetime.year, self.query_datetime.month))
 
-    prvMth = self.queryDatetime.month - (1 * self.relPeriod)
-    self.previous = Quarter(self.getStartOfQuarter(self.queryDatetime.year, prvMth))
+    prv_mth = self.query_datetime.month - (1 * self.rel_period)
+    self.previous = Quarter(self.get_start_of_quarter(self.query_datetime.year, prv_mth))
 
-    bfrMth = self.queryDatetime.month - (2 * self.relPeriod)
-    self.before = Quarter(self.getStartOfQuarter(self.queryDatetime.year, bfrMth))
+    bfr_mth = self.query_datetime.month - (2 * self.rel_period)
+    self.before = Quarter(self.get_start_of_quarter(self.query_datetime.year, bfr_mth))
 
-    nxtMth = self.queryDatetime.month + (1 * self.relPeriod)
-    self.next = Quarter(self.getStartOfQuarter(self.queryDatetime.year, nxtMth))
+    nxt_mth = self.query_datetime.month + (1 * self.rel_period)
+    self.next = Quarter(self.get_start_of_quarter(self.query_datetime.year, nxt_mth))
 
-  def getStartOfQuarter(self, year, month):
-    iYear = int(year)
-    iMth = int(month)
+  def get_start_of_quarter(self, year, month):
+    int_year = int(year)
+    int_mth = int(month)
     # this will give me the current release from current date
-    iMth = iMth - (iMth % self.relPeriod)
+    int_mth = int_mth - (int_mth % self.rel_period)
     # if we get zero, then we're on the last release of last year.
-    if iMth <= 0:
-      iMth += 12
-      iYear -= 1
+    if int_mth <= 0:
+      int_mth += 12
+      int_year -= 1
     # if we get more than 12, then we're on the first release of next year.
-    if iMth > 12:
-      iMth -= 12
-      iYear += 1
-    return date(iYear, iMth, 1)
+    if int_mth > 12:
+      int_mth -= 12
+      int_year += 1
+    return date(int_year, int_mth, 1)
 
   def __repr__(self):
     return """
@@ -49,13 +49,13 @@ QRelease(
 
 
 class Quarter:
-  def __init__(self, startOfQuarter):
+  def __init__(self, start_of_quarter):
     """
     Qurater: a class to store quarter data.
-    :param startOfQuarter: (date) the date which the quarter starts.
+    :param start_of_quarter: (date) the date which the quarter starts.
     """
-    self.year = startOfQuarter.year
-    self.month = "{m:02d}".format(m=startOfQuarter.month)
+    self.year = start_of_quarter.year
+    self.month = "{m:02d}".format(m=start_of_quarter.month)
     self.release = "{o.year}.{o.month}".format(o=self)
     self.abbreviation = "{y}{m}".format(y=str(self.year)[2:], m=self.month)
 

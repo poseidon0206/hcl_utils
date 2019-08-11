@@ -1,8 +1,8 @@
 from qrelease import QRelease
 from QRelease2 import QRelease2
 
-qRelease = QRelease()
-print(qRelease)
+q_release = QRelease()
+print(q_release)
 
-qRelease2 = QRelease2(queryDate="2009-08-12", every=2)
-print(qRelease2)
+q_release2 = QRelease2(query_date="2009-08-12", every=2)
+print(q_release2)
