@@ -51,3 +51,9 @@ will generate the following output:
 **QRelease** and **QRelease2** are basically the same thing. It just figures out the current release from the current date or any given date.
 
 QRelease2 looks more graceful, and it supports any release interval as long as 12 is divisible by it: so intervals of 1, 2, 3, 4, 6 will all be supported.
+
+# Shin Yoonbok
+A docker image builder, tagger, and pusher.
+
+You can specify where the dockerfile is, the script will build, tag, and push to the configured repos accordingly.
+In order to push to the remote repo, you'll need to be authenticated first.
