@@ -57,3 +57,13 @@ A docker image builder, tagger, and pusher.
 
 You can specify where the dockerfile is, the script will build, tag, and push to the configured repos accordingly.
 In order to push to the remote repo, you'll need to be authenticated first.
+
+# Leather Apron
+A video ripper using ffmpeg.
+
+Provide arguments and the script will rip the video using ffmpeg.
+
+# Fandom Gifs
+A frame animater.
+
+The script will search for the frames and animate those frames using imagemagick commands.
