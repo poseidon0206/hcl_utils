@@ -4,9 +4,10 @@ import argparse
 import os
 import sys
 
+from datetime import datetime
 from subprocess import Popen
 
-FFMPEG_BASE = "/usr/local/bin/ffmpeg -nostdin -y __START_POS__ __END_POS__ -i __INPUT_FILE__ \
+FFMPEG_BASE = "ffmpeg -nostdin -y __START_POS__ __END_POS__ -i __INPUT_FILE__ \
 __VF_CROP__ -r __FRAME_RATE__ -s __RESOLUTION__ -c:v libx264 -b:v __VID_BITRATE__ \
 -strict -2 -movflags faststart -acodec libfdk_aac -vbr 5 -ar 48000 -ac 2 \
 __OUTPUT_FILE__"
@@ -74,8 +75,12 @@ at '{o.frame_rate}fps' and '{o.bitrate}' per frame, resizing to '{o.resolution}'
     return ""
 
   def encode_video(self):
+    start = datetime.now()
     if self.do_command(command=self.ffmpeg_cmd):
       print("ripping complete.")
+    end = datetime.now()
+    delta = end - start
+    print(f"start = {start}, end = {end}, delta = {delta}")
 
   def do_command(self, command, do_we_need_shell=False):
     """
@@ -87,14 +92,17 @@ at '{o.frame_rate}fps' and '{o.bitrate}' per frame, resizing to '{o.resolution}'
     else:
       cmd = [w for w in command.split()]
     try:
-      Popen(cmd, shell=do_we_need_shell).wait()
+      proc = Popen(cmd, shell=do_we_need_shell)
+      proc.communicate()
+      if proc.returncode != 0:
+        raise ValueError(f"Command did not return ZERO status : {proc.returncode}")
       return True
     except OSError as err:
       print("Command '{}' was unsuccessful : {}".format(command, err))
-      raise OSError
+      raise err
     except Exception as e:
       print("Unknown error: {}".format(e))
-      raise Exception
+      raise e
 
 
 def parse_args(sys_args):
@@ -123,15 +131,15 @@ def parse_args(sys_args):
                       nargs=1)
   parser.add_argument("-i",
                       "--input",
-                      help="input file",
-                      required=True,
+                      help="input file, default = dvd-ript.avi",
                       type=str,
+                      default=["dvd-rip.avi"],
                       nargs=1)
   parser.add_argument("-o",
                       "--output",
-                      help="output file",
-                      required=True,
+                      help="output file, default = temp.mp4",
                       type=str,
+                      default=["temp.mp4"],
                       nargs=1)
   parser.add_argument("-r",
                       "--resolution",
