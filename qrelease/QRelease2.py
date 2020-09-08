@@ -66,6 +66,7 @@ class Quarter:
     self.month = "{m:02d}".format(m=start_of_quarter.month)
     self.release = "{o.year}.{o.month}".format(o=self)
     self.abbreviation = "{y}{m}".format(y=str(self.year)[2:], m=self.month)
+    self.folder_str = "{o.year}_{o.month}".format(o=self)
 
   def __repr__(self):
     return """
@@ -74,5 +75,6 @@ class Quarter:
     <month = {o.month}>
     <release = {o.release}>
     <abbreviation = {o.abbreviation}>
+    <folder = {o.folder_str}>
   )
     """.format(o=self)
