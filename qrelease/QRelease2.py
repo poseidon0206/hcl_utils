@@ -1,49 +1,57 @@
 from datetime import date, datetime
+from dateutil.relativedelta import relativedelta
 
 
 class QRelease2:
-  def __init__(self, query_date=datetime.now().strftime("%Y-%m-%d"), every=3):
+  def __init__(self, query_date=datetime.now().strftime("%Y-%m-%d"), every=3, num_rels=2):
     """
     QRelease2: does the same thing as QRelease, just fancier.
     :param query_date: (str) the date in YYYY-MM-DD format, defaults to current time.
     :param every: (int) the release period, defaults to 3.
+    :param num_rels: (int) number of previous and next releases to obtain, defaults to 2.
     """
     self.query_datetime = datetime.strptime(query_date, "%Y-%m-%d")
     self.rel_period = every
+    self.number_of_rels = num_rels
 
-    self.current = Quarter(self.get_start_of_quarter(self.query_datetime.year, self.query_datetime.month))
+    self.current = Quarter(self._get_start_of_quarter(self.query_datetime.year, self.query_datetime.month))
 
-    prv_mth = self.query_datetime.month - (1 * self.rel_period)
-    self.previous = Quarter(self.get_start_of_quarter(self.query_datetime.year, prv_mth))
+    self.next_releases = list()
+    self.prev_releases = list()
+    for n in range(1, num_rels+1):
+      prev_rel = Quarter(
+        self._get_start_of_quarter(self.query_datetime.year, self.query_datetime.month, multiplier=-n)
+      )
+      self.prev_releases.append(prev_rel)
+      next_rel = Quarter(
+        self._get_start_of_quarter(self.query_datetime.year, self.query_datetime.month, multiplier=n)
+      )
+      self.next_releases.append(next_rel)
 
-    bfr_mth = self.query_datetime.month - (2 * self.rel_period)
-    self.before = Quarter(self.get_start_of_quarter(self.query_datetime.year, bfr_mth))
-
-    nxt_mth = self.query_datetime.month + (1 * self.rel_period)
-    self.next = Quarter(self.get_start_of_quarter(self.query_datetime.year, nxt_mth))
-
-  def get_start_of_quarter(self, year, month):
-    int_year = int(year)
+  def _get_start_of_quarter(self, year, month, multiplier=0):
+    """
+    _get_start_of_quarter: the method will pad the number of release periods,
+    and adjust the date to be the start of a release period.
+    :param year: (str) the year in question
+    :param month: (str) the month in question
+    :param multiplier: (int) how many release periods to add / subtract
+    :return: date object of the computed release period
+    """
     int_mth = int(month)
-    # this will give me the current release from current date
-    int_mth = int_mth - (int_mth % self.rel_period)
-    # if we get zero, then we're on the last release of last year.
-    if int_mth <= 0:
-      int_mth += 12
-      int_year -= 1
-    # if we get more than 12, then we're on the first release of next year.
-    if int_mth > 12:
-      int_mth -= 12
-      int_year += 1
-    return date(int_year, int_mth, 1)
+    int_year = int(year)
+    # in order to get to the start of the release period, we use modulus
+    reducer = int_mth % self.rel_period
+    # work out how many months to add / remove
+    padded_months = multiplier * self.rel_period
+    # using relativedelta, we can work out any number of releases we need
+    return date(int_year, int_mth, 1) - relativedelta(months=reducer) + relativedelta(months=padded_months)
 
   def __repr__(self):
     return """
 QRelease(
-  <current = {o.current}>
-  <previous = {o.previous}>
-  <before = {o.before}>
-  <next = {o.next}>
+  <current = {o.current}>,
+  <prev = {o.prev_releases}>,
+  <next = {o.next_releases}>,
 )
     """.format(o=self)
 
