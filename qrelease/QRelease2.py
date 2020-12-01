@@ -27,6 +27,7 @@ class QRelease2:
         self._get_start_of_quarter(self.query_datetime.year, self.query_datetime.month, multiplier=n)
       )
       self.next_releases.append(next_rel)
+    self.ghosts_of_christmas = sorted([q.release for q in self.prev_releases + [self.current] + self.next_releases])
 
   def _get_start_of_quarter(self, year, month, multiplier=0):
     """
@@ -52,6 +53,7 @@ QRelease(
   <current = {o.current}>,
   <prev = {o.prev_releases}>,
   <next = {o.next_releases}>,
+  <ghosts = {o.ghosts_of_christmas}>,
 )
     """.format(o=self)
 
