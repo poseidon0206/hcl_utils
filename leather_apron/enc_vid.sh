@@ -24,4 +24,16 @@ do
   CMD="python3 -u ~/bin/enc_vid.py --input ${INPUT_FILE} --output ${VID_NAME} $@"
   echo "${CMD}"
   eval "${CMD}"
+  # don't continue of the ripping exit non-zero
+  if [ $? != 0 ]; then
+    echo "Error! Unable to complete rip."
+    exit 9
+  fi
+  ~/bin/mk_ss.sh ${VID_NAME} av
+  if [ "${VID_NUMBER}" != "avi" ]
+  then
+    mv tn100.jpg tn${VID_NUMBER}.jpg
+  fi
 done
+
+~/bin/post_av.sh

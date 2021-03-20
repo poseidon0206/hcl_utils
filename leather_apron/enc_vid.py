@@ -11,23 +11,23 @@ FFMPEG_BASE = "ffmpeg -nostdin -y __START_POS__ __END_POS__ -i __INPUT_FILE__ \
 __VF_CROP__ -r __FRAME_RATE__ -s __RESOLUTION__ -c:v libx264 -b:v __VID_BITRATE__ \
 -strict -2 -movflags faststart -acodec libfdk_aac -vbr 5 -ar 48000 -ac 2 \
 __OUTPUT_FILE__"
+FFMPEG_BIN = "/usr/local/bin/ffmpeg"
 
 
 class VideoEncoder:
-  def __init__(self, input_file, output_file,
-               frame_rate=24, resolution="960x540", bitrate="0.8M",
-               start_pos=None, end_pos=None, crop_opt=None):
+  def __init__(self, input_file, output_file, **kwargs):
+    self._check_binary()
     self.input_file = input_file
     if not os.path.isfile(self.input_file):
-      raise FileNotFoundError("Input file '{o.input_file}' does not exist.".format(o=self))
+      raise FileNotFoundError(f"Input file <{self.input_file}> does not exist.")
     self.output_file = output_file
-    self.frame_rate = str(frame_rate)
-    self.resolution = resolution
-    self.bitrate = bitrate
-    self.start_pos = start_pos
-    self.end_pos = end_pos
-    self.crop = crop_opt
-    self.ffmpeg_cmd = self.compose_command()
+    self.frame_rate = str(kwargs.get("frame_rate", 24))
+    self.resolution = kwargs.get("resolution", "960x540")
+    self.bitrate = kwargs.get("bitrate", "0.8M")
+    self.start_pos = kwargs.get("start_pos", None)
+    self.end_pos = kwargs.get("end_pos", None)
+    self.crop = kwargs.get("crop_opt", None)
+    self.ffmpeg_cmd = self._compose_command()
 
     print(self)
 
@@ -39,10 +39,15 @@ at '{o.frame_rate}fps' and '{o.bitrate}' per frame, resizing to '{o.resolution}'
 {o.ffmpeg_cmd} 
     """.format(o=self)
 
-  def compose_command(self):
-    start_opt = self.get_opt(opt_dict={"name": "ss", "value": self.start_pos})
-    end_opt = self.get_opt(opt_dict={"name": "to", "value": self.end_pos})
-    crop_opt = self.get_opt(opt_dict={"name": "vf", "value": self.crop})
+  @staticmethod
+  def _check_binary():
+    if not os.path.isfile(FFMPEG_BIN):
+      raise FileNotFoundError(f"<ffmpeg> binary not found, unable to continue...")
+
+  def _compose_command(self):
+    start_opt = self._get_opt(opt_dict={"name": "ss", "value": self.start_pos})
+    end_opt = self._get_opt(opt_dict={"name": "to", "value": self.end_pos})
+    crop_opt = self._get_opt(opt_dict={"name": "vf", "value": self.crop})
     return FFMPEG_BASE.replace(
       "__START_POS__",
       start_opt
@@ -69,20 +74,22 @@ at '{o.frame_rate}fps' and '{o.bitrate}' per frame, resizing to '{o.resolution}'
       self.output_file
     )
 
-  def get_opt(self, opt_dict):
+  @staticmethod
+  def _get_opt(opt_dict):
     if opt_dict["value"] is not None:
       return "-{d[name]} {d[value]}".format(d=opt_dict)
     return ""
 
   def encode_video(self):
-    start = datetime.now()
-    if self.do_command(command=self.ffmpeg_cmd):
+    enc_start = datetime.now()
+    if self._do_command(command=self.ffmpeg_cmd):
       print("ripping complete.")
-    end = datetime.now()
-    delta = end - start
-    print(f"start = {start}, end = {end}, delta = {delta}")
+    enc_end = datetime.now()
+    enc_delta = enc_end - enc_start
+    print(f"start = {enc_start}, end = {enc_end}, delta = {enc_delta}")
 
-  def do_command(self, command, do_we_need_shell=False):
+  @staticmethod
+  def _do_command(command, do_we_need_shell=False):
     """
     a wrapper for Popen
     """
@@ -160,7 +167,7 @@ def parse_args(sys_args):
       )
     )
   if not os.path.isfile(vars(parsed_args)["input"][0]):
-    return parser.error("Input file does not exist.")
+    return parser.error(f"Input file <{vars(parsed_args)['input'][0]}> does not exist.")
   return parsed_args
 
 
