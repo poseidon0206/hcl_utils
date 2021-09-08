@@ -2,6 +2,9 @@
 
 # call this script with trailing extra options to pass to enc_vid.py
 
+# instead of hardcoding the path,
+# we're going to follow where the scripts are installed
+APP_DIR=$(dirname $0)
 DIR=$(basename ${PWD})
 # I will name a cover image with the same name
 # as the final video file.
@@ -21,7 +24,7 @@ do
     VID_NAME="${PWD}/${VID_BASE}-${VID_NUMBER}.mp4"
   fi
   # you can pass additional args here
-  CMD="python3 -u ~/bin/enc_vid.py --input ${INPUT_FILE} --output ${VID_NAME} $@"
+  CMD="python3 -u ${APP_DIR}/enc_vid.py --input ${INPUT_FILE} --output ${VID_NAME} $@"
   echo "${CMD}"
   eval "${CMD}"
   # don't continue of the ripping exit non-zero
