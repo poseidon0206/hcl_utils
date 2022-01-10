@@ -1,4 +1,4 @@
-#! /Users/poseidon206/venvs/bin_py37/bin/python -u
+#! /usr/bin/env python3
 
 import argparse
 import os
