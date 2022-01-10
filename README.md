@@ -67,3 +67,10 @@ Provide arguments and the script will rip the video using ffmpeg.
 A frame animater.
 
 The script will search for the frames and animate those frames using imagemagick commands.
+
+# Arsène Lupin
+The gentleman thief
+
+Give him a target page, and he'll steal all the
+pictures that are linked to the document by the
+```<a>``` tags.
