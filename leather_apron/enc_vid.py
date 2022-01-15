@@ -108,10 +108,10 @@ at '{o.frame_rate}fps' and '{o.bitrate}' per frame, resizing to '{o.resolution}'
   def encode_video(self):
     _enc_start = datetime.now()
     if self.do_command(command=self.ffmpeg_cmd):
-      print("ripping complete.")
+      fancy_logger.info("ripping complete.")
     _enc_end = datetime.now()
     _enc_delta = _enc_end - _enc_start
-    print(f"start = {_enc_start}, end = {_enc_end}, delta = {_enc_delta}")
+    fancy_logger.info(f"start = {_enc_start}, end = {_enc_end}, delta = {_enc_delta}")
 
   def do_command(self, command, do_we_need_shell=False):
     """
@@ -131,10 +131,12 @@ at '{o.frame_rate}fps' and '{o.bitrate}' per frame, resizing to '{o.resolution}'
         raise ValueError(f"Command did not return ZERO status : {proc.returncode}")
       return True
     except OSError as err:
-      print("Command '{}' was unsuccessful : {}".format(command, err))
+      fancy_logger.error(f"Command <{command}> was unsuccessful.")
+      fancy_logger.debug(err)
       raise err
     except Exception as e:
-      print("Unknown error: {}".format(e))
+      fancy_logger.error(f"Command <{command}> encountered unknown error.")
+      fancy_logger.debug(e)
       raise e
 
   @staticmethod
@@ -208,6 +210,7 @@ at '{o.frame_rate}fps' and '{o.bitrate}' per frame, resizing to '{o.resolution}'
 
 
 if __name__ == "__main__":
+  VideoEncoder.check_binary()
   args = VideoEncoder.parse_args(sys_args=sys.argv[1:])
   bit_rate = str(args.bitrate[0]) + "M"
   start = args.start[0] if args.start else args.start
