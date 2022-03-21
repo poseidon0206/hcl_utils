@@ -1,1 +1,1 @@
-https://github.com/poseidon0206/fancy_logger
+git+https://github.com/poseidon0206/fancy_logger
