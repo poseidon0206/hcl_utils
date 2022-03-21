@@ -3,7 +3,7 @@ bs4==0.0.1
 certifi==2021.10.8
 charset-normalizer==2.0.10
 idna==3.3
-nds-logger==0.5
 requests==2.27.1
 soupsieve==2.3.1
 urllib3==1.26.8
+https://github.com/poseidon0206/fancy_logger
