@@ -111,7 +111,9 @@ at '{o.frame_rate}fps' and '{o.bitrate}' per frame, resizing to '{o.resolution}'
       fancy_logger.info("ripping complete.")
     _enc_end = datetime.now()
     _enc_delta = _enc_end - _enc_start
-    fancy_logger.info(f"start = {_enc_start}, end = {_enc_end}, delta = {_enc_delta}")
+    fancy_logger.debug(f"start = {_enc_start}")
+    fancy_logger.debug(f"end = {_enc_end}")
+    fancy_logger.info(f"delta = {_enc_delta}")
 
   def do_command(self, command, do_we_need_shell=False):
     """
