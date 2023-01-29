@@ -35,7 +35,7 @@ do
   ~/bin/mk_ss.sh ${VID_NAME} av
   if [ "${VID_NUMBER}" != "avi" ]
   then
-    mv tn100.jpg tn${VID_NUMBER}.jpg
+    /bin/mv tn100.jpg tn${VID_NUMBER}.jpg
   fi
 done
 

@@ -104,4 +104,6 @@ if __name__ == "__main__":
   )
   _end = datetime.utcnow()
   _delta = _end - _start
-  _logger.info(f"start = <{_start}>, end = <{_end}>, delta = <{_delta}>")
+  _logger.debug(f"start = <{_start}>")
+  _logger.debug(f"end = <{_end}>")
+  _logger.info(f"delta = <{_delta}>")
