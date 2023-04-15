@@ -19,7 +19,7 @@ FFMPEG_BASE = "ffmpeg -hide_banner -nostdin -y " \
               "-acodec libfdk_aac -vbr 5 -ar 48000 " \
               "-ac 2 " \
               "__OUTPUT_FILE__"
-FFMPEG_BIN = "/usr/local/bin/ffmpeg"
+FFMPEG_BIN = "/opt/homebrew/bin/ffmpeg"
 x264_opts = "-c:v libx264 -b:v __VID_BITRATE__ -strict -2 -movflags faststart"
 x265_opts = "-c:v libx265 -preset fast -x265-params crf=23"
 fancy_logger = FancyLogger(caller=__name__).get_logger()
