@@ -20,8 +20,9 @@ FFMPEG_BASE = "ffmpeg -hide_banner -nostdin -y " \
               "-ac 2 " \
               "__OUTPUT_FILE__"
 FFMPEG_BIN = "/opt/homebrew/bin/ffmpeg"
-x264_opts = "-c:v libx264 -b:v __VID_BITRATE__ -strict -2 -movflags faststart"
-x265_opts = "-c:v libx265 -preset fast -x265-params crf=23"
+x264_opts = "-c:v libx264 -b:v __VID_BITRATE__K -strict -2 -movflags faststart"
+#x265_opts = "-c:v libx265 -preset fast -x265-params crf=23"
+x265_opts = "-c:v hevc_videotoolbox -b:v __VID_BITRATE__K"
 fancy_logger = FancyLogger(caller=__name__).get_logger()
 
 
@@ -38,7 +39,7 @@ class VideoEncoder:
     self.output_file = output_file
     self.frame_rate = str(kwargs.get("frame_rate", 24))
     self.resolution = kwargs.get("resolution", "960x540")
-    self.bitrate = kwargs.get("bitrate", "0.8M")
+    self.bitrate = kwargs.get("bitrate", "600")
     self.start_pos = kwargs.get("start_pos", None)
     self.end_pos = kwargs.get("end_pos", None)
     self.crop = kwargs.get("crop_opt", None)
@@ -90,13 +91,13 @@ at '{o.frame_rate}fps' and '{o.bitrate}' per frame, resizing to '{o.resolution}'
     )
     _vid_opts = x265_opts
     if self._x264 is True:
-      _vid_opts = x264_opts.replace(
+      _vid_opts = x264_opts
+    return _cmd_base.replace(
+      "__VID_OPTS__",
+      _vid_opts.replace(
         "__VID_BITRATE__",
         self.bitrate
       )
-    return _cmd_base.replace(
-      "__VID_OPTS__",
-      _vid_opts
     )
 
   @staticmethod
@@ -146,9 +147,9 @@ at '{o.frame_rate}fps' and '{o.bitrate}' per frame, resizing to '{o.resolution}'
     parser = argparse.ArgumentParser(description="Video Encoder")
     parser.add_argument("-b",
                         "--bitrate",
-                        help="video bitrate of ourput file in MB, defaults to 0.8",
-                        type=float,
-                        default=[0.8],
+                        help="video bitrate of ourput file in KB, defaults to 600",
+                        type=int,
+                        default=[600],
                         nargs=1)
     parser.add_argument("-c",
                         "--crop",
@@ -214,7 +215,7 @@ at '{o.frame_rate}fps' and '{o.bitrate}' per frame, resizing to '{o.resolution}'
 if __name__ == "__main__":
   VideoEncoder.check_binary()
   args = VideoEncoder.parse_args(sys_args=sys.argv[1:])
-  bit_rate = str(args.bitrate[0]) + "M"
+  bit_rate = str(args.bitrate[0])
   start = args.start[0] if args.start else args.start
   end = args.end[0] if args.end else args.end
   crop = args.crop[0] if args.crop else args.crop
