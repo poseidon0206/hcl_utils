@@ -5,5 +5,5 @@ charset-normalizer==2.0.10
 idna==3.3
 requests==2.31.0
 soupsieve==2.3.1
-urllib3==1.26.8
+urllib3==1.26.17
 git+https://github.com/poseidon0206/fancy_logger
