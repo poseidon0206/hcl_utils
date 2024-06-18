@@ -2,7 +2,7 @@ import argparse
 import docker
 import os
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class ImageBuilder:
@@ -64,7 +64,7 @@ ImageBuilder(
     return new_repos
 
   def get_tags(self):
-    tag_date = datetime.strftime(datetime.utcnow(), "%Y%m%d")
+    tag_date = datetime.strftime(datetime.now(tz=timezone.utc), "%Y%m%d")
     new_tags = set()
     for tag in [""] + self.additional_tags:
       for datestamp in ("latest", tag_date):

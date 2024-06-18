@@ -5,7 +5,7 @@ import os.path
 import requests
 
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime, timezone
 from fancy_logger import FancyLogger
 from sys import argv
 
@@ -96,13 +96,13 @@ def parse_args(sys_args):
 
 
 if __name__ == "__main__":
-  _start = datetime.utcnow()
+  _start = datetime.now(tz=timezone.utc)
   args = parse_args(sys_args=argv[1:])
   main(
     target_url=args.target,
     verbose=args.verbose
   )
-  _end = datetime.utcnow()
+  _end = datetime.now(tz=timezone.utc)
   _delta = _end - _start
   _logger.debug(f"start = <{_start}>")
   _logger.debug(f"end = <{_end}>")

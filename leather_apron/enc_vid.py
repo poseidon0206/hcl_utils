@@ -4,7 +4,7 @@ import argparse
 import os
 import sys
 
-from datetime import datetime
+from datetime import datetime, timezone
 from fancy_logger import FancyLogger
 from subprocess import Popen
 
@@ -107,10 +107,10 @@ at '{o.frame_rate}fps' and '{o.bitrate}' per frame, resizing to '{o.resolution}'
     return ""
 
   def encode_video(self):
-    _enc_start = datetime.now()
+    _enc_start = datetime.now(tz=timezone.utc)
     if self.do_command(command=self.ffmpeg_cmd):
       fancy_logger.info("ripping complete.")
-    _enc_end = datetime.now()
+    _enc_end = datetime.now(tz=timezone.utc)
     _enc_delta = _enc_end - _enc_start
     fancy_logger.debug(f"start = {_enc_start}")
     fancy_logger.debug(f"end = {_enc_end}")
