@@ -6,4 +6,4 @@ fancy_logger @ git+https://github.com/poseidon0206/fancy_logger@3cd78fd2e8402ca5
 idna==3.7
 requests==2.32.4
 soupsieve==2.5
-urllib3==2.2.2
+urllib3>=2.5.0
