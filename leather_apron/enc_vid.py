@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from fancy_logger import FancyLogger
 from subprocess import Popen
 
-FFMPEG_BASE = "ffmpeg -hide_banner -nostdin -y " \
+FFMPEG_BASE = "ffmpeg -hide_banner -nostdin -y -loglevel datetime+level+warning " \
               "__START_POS__ " \
               "__END_POS__ " \
               "-i __INPUT_FILE__ " \
