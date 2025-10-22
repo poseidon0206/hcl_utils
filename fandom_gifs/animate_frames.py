@@ -81,8 +81,13 @@ Frame Animator(
     self.do_cmd(shrink_cmd)
 
   def animate_frames(self):
-    animate_cmd = "convert -delay 1x10 -loop 0 -layers optimize-plus -colors 256 -dither floydsteinberg " \
-                  "{list} {o.output_file}".format(list=" ".join(self.frame_list), o=self)
+    animate_cmd = "magick {list_of_frames} " \
+                  "-delay 1x10 " \
+                  "-loop 0 " \
+                  "-layers optimize-plus " \
+                  "-colors 256 " \
+                  "-dither floydsteinberg " \
+                  "{o.output_file}".format(list_of_frames=" ".join(self.frame_list), o=self)
     self.do_cmd(animate_cmd)
     print("frames animated.")
 
