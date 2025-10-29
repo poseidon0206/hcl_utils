@@ -24,7 +24,7 @@ do
     VID_NAME="${PWD}/${VID_BASE}-${VID_NUMBER}.mp4"
   fi
   # you can pass additional args here
-  CMD="python3 -u ${APP_DIR}/enc_vid.py --input ${INPUT_FILE} --output ${VID_NAME} $@"
+  CMD="${APP_DIR}/enc_vid.py --input ${INPUT_FILE} --output ${VID_NAME} $@"
   echo "${CMD}"
   eval "${CMD}"
   # don't continue of the ripping exit non-zero
