@@ -3,7 +3,7 @@ bs4==0.0.2
 certifi==2024.7.4
 charset-normalizer==3.3.2
 fancy_logger @ git+https://github.com/poseidon0206/fancy_logger@3cd78fd2e8402ca5510565c8dad8e404c56505ff
-idna==3.7
+idna==3.15
 requests==2.33.0
 soupsieve==2.5
 urllib3>=2.5.0
