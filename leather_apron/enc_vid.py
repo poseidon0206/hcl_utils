@@ -1,5 +1,11 @@
 #! /usr/bin/env -S uv run
+"""Compose and run an ffmpeg command to rip/encode a video.
 
+Encodes the input file with hevc_videotoolbox (x265) by default or
+libx264 on request, with configurable bitrate, frame rate, resolution,
+crop and start/end positions. With --fake the composed ffmpeg command
+is only logged, not executed.
+"""
 import argparse
 import os
 import sys
@@ -27,7 +33,29 @@ fancy_logger = FancyLogger(caller=__name__).get_logger()
 
 
 class VideoEncoder:
+  """
+  Composes an ffmpeg command from the given options and runs it,
+  encoding input_file to output_file with hevc_videotoolbox (x265)
+  or libx264. With fake=True the command is logged, not executed.
+  """
   def __init__(self, input_file, output_file, **kwargs):
+    """
+    :param input_file: path of the video file to encode; must exist.
+    :param output_file: path of the encoded output file.
+    :param kwargs: encoding options.
+    :keyword frame_rate: output frame rate, defaults to 24.
+    :keyword resolution: output resolution as [w]x[h], defaults to
+      "960x540".
+    :keyword bitrate: video bitrate in KB, defaults to "600".
+    :keyword start_pos: start position in the input file, defaults to
+      None.
+    :keyword end_pos: end position in the input file, defaults to None.
+    :keyword crop_opt: ffmpeg video-filter value for cropping, defaults
+      to None.
+    :keyword x264: encode with libx264 instead of hevc_videotoolbox.
+    :keyword verbose: activate debug logging.
+    :keyword fake: log the composed command without executing it.
+    """
     self.check_binary()
     self._verbose = kwargs.get("verbose", False)
     if self._verbose is True:
@@ -51,6 +79,10 @@ class VideoEncoder:
     fancy_logger.debug(self)
 
   def __repr__(self):
+    """
+    :return: multi-line string describing the encode and the composed
+      ffmpeg command.
+    """
     return """
 Encoding '{o.input_file}' to '{o.output_file}'
 at '{o.frame_rate}fps' and '{o.bitrate}' per frame, resizing to '{o.resolution}'.
@@ -60,10 +92,18 @@ at '{o.frame_rate}fps' and '{o.bitrate}' per frame, resizing to '{o.resolution}'
 
   @staticmethod
   def check_binary():
+    """Ensure the ffmpeg binary exists at FFMPEG_BIN.
+
+    :raises FileNotFoundError: when the binary is missing.
+    """
     if not os.path.isfile(FFMPEG_BIN):
       raise FileNotFoundError(f"<ffmpeg> binary not found, unable to continue...")
 
   def _compose_command(self):
+    """Fill the FFMPEG_BASE template with the instance's options.
+
+    :return: the complete ffmpeg command string.
+    """
     start_opt = self.get_opt(opt_dict={"name": "ss", "value": self.start_pos})
     end_opt = self.get_opt(opt_dict={"name": "to", "value": self.end_pos})
     crop_opt = self.get_opt(opt_dict={"name": "vf", "value": self.crop})
@@ -102,11 +142,18 @@ at '{o.frame_rate}fps' and '{o.bitrate}' per frame, resizing to '{o.resolution}'
 
   @staticmethod
   def get_opt(opt_dict):
+    """Render an optional ffmpeg flag.
+
+    :param opt_dict: dict with "name" and "value" keys.
+    :return: "-<name> <value>" when the value is set, otherwise an
+      empty string.
+    """
     if opt_dict["value"] is not None:
       return "-{d[name]} {d[value]}".format(d=opt_dict)
     return ""
 
   def encode_video(self):
+    """Run the composed ffmpeg command and log the encoding duration."""
     _enc_start = datetime.now(tz=timezone.utc)
     if self.do_command(command=self.ffmpeg_cmd):
       fancy_logger.info("ripping complete.")
@@ -144,6 +191,13 @@ at '{o.frame_rate}fps' and '{o.bitrate}' per frame, resizing to '{o.resolution}'
 
   @staticmethod
   def parse_args(sys_args):
+    """Parse command-line arguments.
+
+    :param sys_args: list of argument strings, e.g. sys.argv[1:].
+    :return: argparse.Namespace with the encoder options; exits with a
+      parser error when the resolution is malformed or the input file
+      does not exist.
+    """
     parser = argparse.ArgumentParser(description="Video Encoder")
     parser.add_argument("-b",
                         "--bitrate",
