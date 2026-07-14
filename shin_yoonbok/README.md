@@ -2,6 +2,10 @@
 
 It's just a docker image builder though.
 
+This was my attempt to simplify docker image building. It's pretty
+outdated now that the build and run commands get figured out for you
+(e.g. by AI assistants), so the project is all but deprecated.
+
 ## Namesake
 
 **Shin Yoon-bok** is known by his pen name *Hyewon*, who was one of the

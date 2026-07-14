@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.20] - 2026-07-14
+
+### Changed
+
+- Bumped pinned dependencies: `docker` 7.0.0 → 7.2.0,
+  `certifi` 2024.7.4 → 2026.6.17, `chardet` 5.2.0 → 7.4.3,
+  `charset-normalizer` 3.3.2 → 3.4.9, `idna` 3.15 → 3.18,
+  `packaging` 24.0 → 26.2, `requests` 2.33.0 → 2.34.2,
+  `six` 1.16.0 → 1.17.0, `websocket-client` 1.7.0 → 1.9.0.
+
+### Deprecated
+
+- The project is all but deprecated: it predates tooling that figures
+  out the docker build/run commands for you.
+
 ## [1.0.19] - 2026-07-14
 
 ### Added
