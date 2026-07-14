@@ -1,3 +1,9 @@
+"""Build, tag and push a docker image from a Dockerfile.
+
+Builds the image found in the work directory, tags it against every
+registry base in config.py's DOCKER_DTR_BASE with "latest" and the
+current date (plus any additional tags), and pushes all of them.
+"""
 import sys
 from ImageBuilder import ImageBuilder
 
