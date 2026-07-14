@@ -1,3 +1,9 @@
+"""Sample script demonstrating the BackToTheFuture class.
+
+Parses command-line arguments, travels back the requested number of years
+from the destined year/month, and optionally prints every stop on the way
+back to the destined time by month and/or by year.
+"""
 import sys
 
 from BackToTheFuture import BackToTheFuture
