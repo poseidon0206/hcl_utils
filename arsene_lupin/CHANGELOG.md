@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.19] - 2026-07-14
+
+### Changed
+
+- Bumped pinned dependencies: `beautifulsoup4` 4.12.3 → 4.15.0,
+  `certifi` 2024.7.4 → 2026.6.17, `charset-normalizer` 3.3.2 → 3.4.9,
+  `idna` 3.15 → 3.18, `requests` 2.33.0 → 2.34.2,
+  `soupsieve` 2.5 → 2.8.4.
+
 ## [1.2.18] - 2026-07-14
 
 ### Added
