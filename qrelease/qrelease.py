@@ -43,7 +43,7 @@ class QRelease:
     Returns:
         None
     """
-    if args and search("\d{4}.\d{2}", args):
+    if args and search(r"\d{4}.\d{2}", args):
       self.curYear, self.curMth = args.split(".")
     else:
       self.curYear = start.year
