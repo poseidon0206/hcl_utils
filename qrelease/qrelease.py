@@ -1,3 +1,9 @@
+"""Quarterly release calculator.
+
+Provides the QRelease class, which works out the current, previous,
+two-back and next releases (quarterly by default, optionally monthly)
+for a given date and renders them as a table.
+"""
 from re import search
 from tabulate import tabulate
 from datetime import datetime
@@ -37,7 +43,7 @@ class QRelease:
     Returns:
         None
     """
-    if args and search("\d{4}.\d{2}", args):
+    if args and search(r"\d{4}.\d{2}", args):
       self.curYear, self.curMth = args.split(".")
     else:
       self.curYear = start.year
@@ -108,6 +114,10 @@ class QRelease:
     return (rel, short)
 
   def __repr__(self):
+    """
+    :return: psql-style table (via tabulate) listing the current,
+      previous, two-back and next releases.
+    """
     headers = ["Item", "Release", "Abbr", "Year", "Month"]
     dispTable = []
     dispTable.append(["Current", self.curRel, self.curShort, self.curYear, self.curMth])

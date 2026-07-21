@@ -1,8 +1,19 @@
+"""Generalised release calculator.
+
+Provides the QRelease2 class, which supports any release interval that
+divides 12 (1, 2, 3, 4 or 6 months) and any number of previous/next
+releases, plus the Quarter class that holds the strings for one release.
+"""
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
 
 class QRelease2:
+  """
+  Release calculator for a configurable release interval, exposing the
+  current release plus num_rels previous and next releases as Quarter
+  objects, and all release strings sorted in ghosts_of_christmas.
+  """
   def __init__(self, query_date=datetime.now().strftime("%Y-%m-%d"), every=3, num_rels=2):
     """
     QRelease2: does the same thing as QRelease, just fancier.
@@ -48,6 +59,10 @@ class QRelease2:
     return date(int_year, int_mth, 1) - relativedelta(months=reducer) + relativedelta(months=padded_months)
 
   def __repr__(self):
+    """
+    :return: multi-line string showing the current, previous and next
+      releases and the sorted ghosts_of_christmas release list.
+    """
     return """
 QRelease(
   <current = {o.current}>,
@@ -59,6 +74,11 @@ QRelease(
 
 
 class Quarter:
+  """
+  Holds the data for one release period: year, zero-padded month, the
+  release string (YYYY.MM), its abbreviation (YYMM) and folder string
+  (YYYY_MM).
+  """
   def __init__(self, start_of_quarter):
     """
     Qurater: a class to store quarter data.
@@ -71,6 +91,9 @@ class Quarter:
     self.folder_str = "{o.year}_{o.month}".format(o=self)
 
   def __repr__(self):
+    """
+    :return: multi-line string listing the quarter's attributes.
+    """
     return """
   Quarter(
     <year = {o.year}>

@@ -1,3 +1,9 @@
+"""Sample script demonstrating the QRelease and QRelease2 classes.
+
+Prints the release table for the current date using QRelease, then shows
+QRelease2 with a custom query date and two-month release interval, and with
+a six-month interval obtaining eight previous and next releases.
+"""
 from qrelease import QRelease
 from QRelease2 import QRelease2
 

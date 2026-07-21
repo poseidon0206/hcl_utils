@@ -1,5 +1,10 @@
 #! /usr/bin/env python3
+"""Scrape all jpgs linked from a web page.
 
+Fetches the target page, finds every <a> tag whose href points at a
+.jpg, and downloads each one into the current working directory,
+skipping files that are already fully downloaded.
+"""
 import argparse
 import os.path
 import requests
@@ -46,6 +51,13 @@ def _pull_html(target_url):
 
 
 def main(target_url, **kwargs):
+  """Download every jpg linked from the target page.
+
+  :param target_url: (str) the URL of the page to scrape.
+  :param kwargs: options.
+  :keyword verbose: activate debug logging.
+  :return: None
+  """
   if kwargs.get("verbose", False) is True:
     _logger.setLevel(10)
     _logger.debug("verbose mode activated.")
@@ -82,6 +94,11 @@ def download_target(target_url):
 
 
 def parse_args(sys_args):
+  """Parse command-line arguments.
+
+  :param sys_args: list of argument strings, e.g. sys.argv[1:].
+  :return: argparse.Namespace with target and verbose attributes.
+  """
   parser = argparse.ArgumentParser(description="grab links for jpgs")
   parser.add_argument("-v",
                       "--verbose",

@@ -1,76 +1,13 @@
 # Hans' Utils
 
-These are just some reusable tools that I wrote.
+These are just some reusable tools that I wrote. Each project has its
+own README with deployment, configuration and usage details.
 
-# BackToTheFuture.py
-I started with BackToTheFuture.py one night and finished it next morning. I just wanted something to loop with when I do historical queries, like when I had to calculate monthly totals for each month. Then I’ll have to write this query 12 times:
-```
-SELECT SUM(cost) AS monthly_total FROM job_costs WHERE start LIKE ‘2018-06-%’
-SELECT SUM(cost) AS monthly_total FROM job_costs WHERE start LIKE ‘2018-07-%’
-SELECT SUM(cost) AS monthly_total FROM job_costs WHERE start LIKE ‘2018-08-%’
-```
- 
-When I wanted to automate this, we will sure lapse into the next / previous year, of course we can solve that with simple if statements, but what if we want to go two years? Five years? Then I thought a more permanent solution would be a mathematical one.
-
-With this class you can go back thousands of years faithfully. The class can support traversing **by month** and **by year** only. The feature to traverse by day is a bit too steep of an order at the moment.
-
-## Sample Code
-Consider the following code:
-```python
-From BackToTheFuture import BackToTheFuture
- 
-greatScott = BackToTheFuture(year=2019, month=6, numberOfYears=10)
-for pastDate in greatScott.byMonth():
-  print(pastDate)
-``` 
-
-will generate the following output:
-```
-2009-06-05
-2009-07-05
-2009-08-05
-2009-09-05
-2009-10-05
-2009-11-05
-2009-12-05
-2010-01-05
-…
-…
-…
-2018-11-05
-2018-12-05
-2019-01-05
-2019-02-05
-2019-03-05
-2019-04-05
-2019-05-05
-2019-06-05
-``` 
-
-# QRelease 
-**QRelease** and **QRelease2** are basically the same thing. It just figures out the current release from the current date or any given date.
-
-QRelease2 looks more graceful, and it supports any release interval as long as 12 is divisible by it: so intervals of 1, 2, 3, 4, 6 will all be supported.
-
-# Shin Yoonbok
-A docker image builder, tagger, and pusher.
-
-You can specify where the dockerfile is, the script will build, tag, and push to the configured repos accordingly.
-In order to push to the remote repo, you'll need to be authenticated first.
-
-# Leather Apron
-A video ripper using ffmpeg.
-
-Provide arguments and the script will rip the video using ffmpeg.
-
-# Fandom Gifs
-A frame animater.
-
-The script will search for the frames and animate those frames using imagemagick commands.
-
-# Arsène Lupin
-The gentleman thief
-
-Give him a target page, and he'll steal all the
-pictures that are linked to the document by the
-```<a>``` tags.
+| Project | What it does | Namesake |
+|---------|--------------|----------|
+| [Arsène Lupin](arsene_lupin/README.md) | Scrapes all the jpgs linked from a web page. | Maurice Leblanc's gentleman thief — he steals the pictures right off the page. |
+| [Back To The Future](back_to_the_future/README.md) | Travels back a number of years from a destined date and enumerates the dates on the way back, by month or by year. | The 1985 film — the defaults (November 1985, 30 years back) land on November 1955, the very trip Marty McFly took; `great_scott.py` is Doc Brown's catchphrase. |
+| [Fandom Gifs](fandom_gifs/README.md) | Crops, logo-pads and shrinks video frames, then animates them into a looping GIF with ImageMagick. | Literal: GIFs made for fandom. |
+| [Leather Apron](leather_apron/README.md) | Composes ffmpeg commands to rip videos, with a batch wrapper for multi-part rips. | "Leather Apron" was the nickname of the prime suspect in the Whitechapel murders before "Jack the Ripper" stuck — this one rips videos instead. |
+| [Quarter Release](qrelease/README.md) | Works out the current, previous and next releases for any release interval that divides 12. | Literal: the quarterly release calendar — though its `ghosts_of_christmas` attribute (releases past, present and future) tips its hat to Dickens. |
+| [Shin Yoon-bok](shin_yoonbok/README.md) | Builds, tags and pushes docker images (all but deprecated these days). | Shin Yun-bok, pen name *Hyewon*, the Joseon-era master painter — a painter of images naming a builder of images. |
