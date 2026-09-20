@@ -22,7 +22,7 @@ FFMPEG_BASE = "ffmpeg -hide_banner -nostdin -y -loglevel datetime+level+warning 
               "-r __FRAME_RATE__ " \
               "-s __RESOLUTION__ " \
               "__VID_OPTS__ " \
-              "-acodec libfdk_aac -vbr 5 -ar 48000 " \
+              "-acodec aac_at -b:a 192k -ar 48000 " \
               "-ac 2 " \
               "__OUTPUT_FILE__"
 FFMPEG_BIN = "/opt/homebrew/bin/ffmpeg"
